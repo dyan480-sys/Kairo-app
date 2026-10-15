@@ -1,7 +1,7 @@
 {
   "name": "kairo-app",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "expo-router/entry",
   "dependencies": {
     "@expo/ui": "~58.0.18",
     "@react-navigation/bottom-tabs": "^7.21.0",
