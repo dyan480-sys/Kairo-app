@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import SplashScreen from './src/screens/SplashScreen';
 import LoginScreen from './src/screens/LoginScreens';
-import MainTabs from './src/screens/MainTabs'; // Importamos las pestañas inferiores
+import MainTabs from './src/screens/MainTabs';
 
 const Stack = createNativeStackNavigator();
 

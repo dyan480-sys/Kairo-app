@@ -1,33 +1,18 @@
 import React from 'react';
-import { createBottomTabNavigation } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, StyleSheet } from 'react-native';
 
-// Pantallas temporales para cada pestaña del menú inferior
+import SearchScreen from './SearchScreens';
+import LibraryScreen from './LibraryScreen';
+import ProfileScreen from './ProfileScreen';
+
 function CatalogScreen() {
   return (
-    <View style={styles.screen}><Text style={styles.text}>Catálogo de Obras (Kairo)</Text></View>
+    <View style={styles.screen}><Text style={styles.text}>Catálogo de Obras - Kairo</Text></View>
   );
 }
 
-function SearchScreen() {
-  return (
-    <View style={styles.screen}><Text style={styles.text}>Búsqueda y Categorías / Encuesta</Text></View>
-  );
-}
-
-function LibraryScreen() {
-  return (
-    <View style={styles.screen}><Text style={styles.text}>Mi Biblioteca y Progreso</Text></View>
-  );
-}
-
-function ProfileScreen() {
-  return (
-    <View style={styles.screen}><Text style={styles.text}>Perfil y Monedas</Text></View>
-  );
-}
-
-const Tab = createBottomTabNavigation();
+const Tab = createBottomTabNavigator();
 
 export default function MainTabs() {
   return (
@@ -44,8 +29,3 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: '#121212', justifyContent: 'center', alignItems: 'center' },
   text: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
 });
-
-import LibraryScreen from './LibraryScreen'; // Importa arriba
-
-// En el Tab.Navigator:
-<Tab.Screen name="Biblioteca" component={LibraryScreen} />
