@@ -44,3 +44,8 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: '#121212', justifyContent: 'center', alignItems: 'center' },
   text: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
 });
+
+import LibraryScreen from './LibraryScreen'; // Importa arriba
+
+// En el Tab.Navigator:
+<Tab.Screen name="Biblioteca" component={LibraryScreen} />
