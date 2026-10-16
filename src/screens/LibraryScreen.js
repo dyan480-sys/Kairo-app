@@ -1,52 +1,132 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+// src/screens/LibraryScreen.js
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { COLORS } from '../theme/theme';
 
 export default function LibraryScreen() {
-  const [coins, setCoins] = useState(20); // Monedas iniciales simuladas
-  const [lastChapter, setLastChapter] = useState(27); // Último capítulo guardado (ejemplo: cap 27)
-
-  const handleReadChapter = (isLocked) => {
-    if (isLocked) {
-      if (coins >= 30) {
-        setCoins(coins - 30);
-        Alert.alert("¡Éxito!", "Capítulo anticipado desbloqueado con 30 monedas.");
-      } else {
-        Alert.alert("Saldo insuficiente", "Necesitas más monedas para ver este capítulo anticipado.");
-      }
-    } else {
-      Alert.alert("Leyendo", `Continuando desde tu último progreso: Capítulo ${lastChapter}`);
-    }
-  };
+  // [FUTURO]: Estos datos de la biblioteca personal se cargarán desde PostgreSQL vinculados al ID del usuario autenticado
+  const misObrasGuardadas = [
+    { id: '1', titulo: "El Despertar del Monarca", capituloActual: "Capítulo 27", estado: "Leyendo" },
+    { id: '2', titulo: "Torre de Hechizos", capituloActual: "Capítulo 5", estado: "Guardado" },
+  ];
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Mi Biblioteca Kairo</Text>
-      <Text style={styles.coinsText}>Monedas actuales: 🪙 {coins}</Text>
-
-      <View style={styles.card}>
-        <Text style={styles.obraTitle}>Obra: El Despertar del Monarca</Text>
-        <Text style={styles.progress}>Progreso guardado: Capítulo {lastChapter}</Text>
-        
-        <TouchableOpacity style={styles.btnRead} onPress={() => handleReadChapter(false)}>
-          <Text style={styles.btnText}>Continuar Lectura (Gratis)</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btnLocked} onPress={() => handleReadChapter(true)}>
-          <Text style={styles.btnText}>Desbloquear Capítulo Anticipado (30 🪙)</Text>
-        </TouchableOpacity>
+    <ScrollView style={styles.container}>
+      <Text style={styles.headerTitle}>Mi Biblioteca KAIRO</Text>
+      
+      <View style={styles.walletCard}>
+        <Text style={styles.walletLabel}>Saldo de Monedas KAIRO</Text>
+        <Text style={styles.coinsText}>🪙 50 Monedas disponibles</Text>
       </View>
-    </View>
+
+      <Text style={styles.sectionTitle}>Continuar Leyendo</Text>
+      
+      {misObrasGuardadas.map(( obra) => (
+        <View key={obra.id} style={styles.card}>
+          <Text style={styles.cardTitle}>{obra.titulo}</Text>
+          <Text style={styles.cardProgress}>Progreso: {obra.capituloActual} ({obra.estado})</Text>
+
+          <View style={styles.buttonRow}>
+            <TouchableOpacity style={styles.btnPrimary}>
+              <Text style={styles.btnPrimaryText}>Seguir Leyendo</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.btnSecondary}>
+              <Text style={styles.btnSecondaryText}>Desbloquear Cap.</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#121212', padding: 20, justifyContent: 'center' },
-  title: { fontSize: 24, fontWeight: 'bold', color: '#ff4757', textAlign: 'center', marginBottom: 10 },
-  coinsText: { fontSize: 16, color: '#f1c40f', textAlign: 'center', marginBottom: 20, fontWeight: 'bold' },
-  card: { backgroundColor: '#1e1e1e', padding: 20, borderRadius: 10, borderWidth: 1, borderColor: '#333' },
-  obraTitle: { fontSize: 18, color: '#fff', fontWeight: 'bold', marginBottom: 5 },
-  progress: { fontSize: 14, color: '#aaa', marginBottom: 15 },
-  btnRead: { backgroundColor: '#007AFF', padding: 12, borderRadius: 6, marginBottom: 10 },
-  btnLocked: { backgroundColor: '#e67e22', padding: 12, borderRadius: 6 },
-  btnText: { color: '#fff', textAlign: 'center', fontWeight: 'bold' }
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+    padding: 24,
+    paddingTop: 50,
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: COLORS.textPrimary,
+    marginBottom: 16,
+  },
+  walletCard: {
+    backgroundColor: COLORS.surface,
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.secondary,
+    marginBottom: 24,
+  },
+  walletLabel: {
+    fontSize: 13,
+    color: COLORS.textSecondary,
+    marginBottom: 4,
+    textTransform: 'uppercase',
+  },
+  coinsText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: COLORS.accent,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: COLORS.textPrimary,
+    marginBottom: 14,
+  },
+  card: {
+    backgroundColor: COLORS.surface,
+    padding: 18,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    marginBottom: 16,
+  },
+  cardTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: COLORS.textPrimary,
+    marginBottom: 6,
+  },
+  cardProgress: {
+    fontSize: 13,
+    color: COLORS.textSecondary,
+    marginBottom: 16,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+  btnPrimary: {
+    flex: 1,
+    backgroundColor: COLORS.primary,
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  btnPrimaryText: {
+    color: COLORS.textPrimary,
+    fontWeight: 'bold',
+    fontSize: 13,
+  },
+  btnSecondary: {
+    flex: 1,
+    backgroundColor: COLORS.surfaceLight,
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.secondary,
+  },
+  btnSecondaryText: {
+    color: COLORS.secondary,
+    fontWeight: 'bold',
+    fontSize: 13,
+  },
 });

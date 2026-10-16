@@ -1,51 +1,56 @@
+// src/screens/SplashScreen.js
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Image, Text } from 'react-native';
+import { View, StyleSheet, Animated, Text, TouchableOpacity } from 'react-native';
+import { COLORS } from '../theme/theme';
 
 export default function SplashScreen({ navigation }) {
-  // Valores animados para opacidad y tamaño (escala)
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.5)).current;
 
-  useEffect(() => {
-    // 1. Iniciar la animación paralela (Aumentar tamaño + Aparecer)
+  // Función interactiva de recarga o reinicio de animación al tocar el isotipo
+  const handleReloadAnimation = () => {
+    fadeAnim.setValue(0);
+    scaleAnim.setValue(0.5);
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 1500,
-        useNativeDriver: true,
+        duration: 1200,
+        useNativeDriver: false,
       }),
       Animated.spring(scaleAnim, {
         toValue: 1,
-        friction: 6,
-        tension: 40,
-        useNativeDriver: true,
+        friction: 4,
+        tension: 50,
+        useNativeDriver: false,
       }),
     ]).start();
+  };
 
-    // 2. Transcurrido el tiempo (3.5 segundos), cambiar a la pantalla de Login
+  useEffect(() => {
+    // [FUTURO]: Validación inicial de token de sesión con Spring Boot
+    handleReloadAnimation();
+
     const timer = setTimeout(() => {
       navigation.replace('Login');
-    }, 3500);
+    }, 4000); // 4 segundos para apreciar la animación interactiva
 
     return () => clearTimeout(timer);
   }, [fadeAnim, scaleAnim, navigation]);
 
   return (
     <View style={styles.container}>
-      {/* Contenedor Animado */}
       <Animated.View 
         style={[
           styles.logoContainer, 
           { opacity: fadeAnim, transform: [{ scale: scaleAnim }] }
         ]}
       >
-        {/* Si ya guardaste la imagen en assets/logo.png usas require('../../assets/logo.png') */}
-        {/* Si aún no la has colocado, mostramos el isotipo cósmico generado con estilos */}
-        <View style={styles.logoCircle}>
+        {/* Isotipo interactivo: Haz clic en la K para reiniciar la animación */}
+        <TouchableOpacity style={styles.logoCircle} onPress={handleReloadAnimation}>
           <Text style={styles.logoText}>K</Text>
-        </View>
+        </TouchableOpacity>
         <Text style={styles.brandTitle}>KAIRO</Text>
-        <Text style={styles.tagline}>TU PRÓXIMA HISTORIA COMIENZA AQUÍ</Text>
+        <Text style={styles.tagline}>Toca la K para recargar • Tu historia comienza aquí</Text>
       </Animated.View>
     </View>
   );
@@ -54,7 +59,7 @@ export default function SplashScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0A0B18', // Fondo azul oscuro espacial de Kairo
+    backgroundColor: COLORS.background,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -62,36 +67,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#1B3DA8',
+    width: 130,
+    height: 130,
+    borderRadius: 65,
+    backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#3EC5FF',
-    shadowColor: '#A855F7',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 15,
-    elevation: 10,
+    borderColor: COLORS.accent,
     marginBottom: 20,
   },
   logoText: {
-    fontSize: 64,
+    fontSize: 68,
     fontWeight: 'bold',
-    color: '#EDE7FF',
+    color: COLORS.textPrimary,
   },
   brandTitle: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#EDE7FF',
-    letterSpacing: 4,
+    color: COLORS.textPrimary,
+    letterSpacing: 3,
   },
   tagline: {
-    fontSize: 11,
-    color: '#3EC5FF',
-    letterSpacing: 2,
+    fontSize: 12,
+    color: COLORS.accent,
+    letterSpacing: 1.2,
     marginTop: 8,
+    textTransform: 'uppercase',
   },
 });

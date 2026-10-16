@@ -4,24 +4,21 @@
     "slug": "kairo-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/kairo-logo.png",
+    "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/kairo-logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0A0B18"
     },
     "ios": {
-      "supportsIdentifier": "kairoapp"
+      "supportsTablet": true
     },
     "android": {
       "package": "com.anonymous.kairoapp"
     },
     "web": {
       "bundler": "metro"
-    },
-    "plugins": [
-      "expo-router"
-    ]
+    }
   }
 }
