@@ -9,6 +9,7 @@ import MainTabs from './src/screens/MainTabs';
 import LibraryScreen from './src/screens/LibraryScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import SearchScreen from './src/screens/SearchScreens';
+import DetailScreen from './src/screens/DetailScreen'; 
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ export default function App() {
           <Stack.Screen name="Library" component={LibraryScreen} />
           <Stack.Screen name="Profile" component={ProfileScreen} />
           <Stack.Screen name="Search" component={SearchScreen} />
+          <Stack.Screen name="Detail" component={DetailScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

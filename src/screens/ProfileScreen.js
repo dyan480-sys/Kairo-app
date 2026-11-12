@@ -1,79 +1,98 @@
-// src/screens/ProfileScreen.js
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { COLORS } from '../theme/theme';
 
-export default function ProfileScreen() {
-  // [FUTURO]: Estos datos se sincronizarán con Spring Boot al autenticar el usuario
-  const usuario = {
-    nombre: "Vilma Dayana",
-    nivel: "Nivel 3 (Lector Activo)",
-    monedas: 50,
-    obrasGuardadas: 4,
-    comentarios: 12,
+export default function ProfileScreen({ navigation, route }) {
+  const usuario = route.params?.usuario || { nombre: 'Usuario', monedas: 0, nivel: 0 };
+
+  const handleLogout = () => {
+    navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Text style={styles.headerTitle}>Perfil KAIRO</Text>
-
+      
+      {/* Tarjeta de Información Principal */}
       <View style={styles.card}>
-        <Text style={styles.nameText}>{usuario.nombre}</Text>
-        <Text style={styles.infoText}>Rango: {usuario.nivel}</Text>
-        <Text style={styles.infoText}>Monedas disponibles: 🪙 {usuario.monedas}</Text>
-        <Text style={styles.infoText}>Obras en Biblioteca: {usuario.obrasGuardadas}</Text>
-        <Text style={styles.infoText}>Comentarios realizados: {usuario.comentarios}</Text>
+        <View style={styles.avatarContainer}>
+          <Text style={styles.avatarText}>{usuario.nombre.charAt(0).toUpperCase()}</Text>
+        </View>
+        <Text style={styles.userName}>{usuario.nombre}</Text>
+        <Text style={styles.userRank}>Rango: Lector Nuevo</Text>
+        
+        <View style={styles.statsRow}>
+          <View style={styles.statItem}>
+            <Text style={styles.statValue}>{usuario.nivel}</Text>
+            <Text style={styles.statLabel}>Nivel</Text>
+          </View>
+          <View style={styles.divider} />
+          <View style={styles.statItem}>
+            <Text style={styles.statValueGold}>{usuario.monedas} 🪙</Text>
+            <Text style={styles.statLabel}>Monedas</Text>
+          </View>
+        </View>
+      </View>
 
-        <TouchableOpacity style={styles.btnAction}>
-          <Text style={styles.btnText}>Gestionar Suscripción y Monedas</Text>
+      {/* Lista de Opciones estilo moderno */}
+      <View style={styles.menuContainer}>
+        <TouchableOpacity style={styles.menuItem}>
+          <Text style={styles.menuText}>Mis Obras Guardadas</Text>
+          <Text style={styles.menuArrow}>›</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem}>
+          <Text style={styles.menuText}>Historial de Lectura</Text>
+          <Text style={styles.menuArrow}>›</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.menuItem}>
+          <Text style={styles.menuText}>Configuración</Text>
+          <Text style={styles.menuArrow}>›</Text>
         </TouchableOpacity>
       </View>
-    </View>
+
+      {/* Botón de Cerrar Sesión Elegante */}
+      <TouchableOpacity style={styles.btnLogout} onPress={handleLogout}>
+        <Text style={styles.btnLogoutText}>Cerrar Sesión</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-    padding: 24,
-    justifyContent: 'center',
+  container: { flex: 1, backgroundColor: COLORS.background, padding: 24 },
+  headerTitle: { fontSize: 28, fontWeight: 'bold', color: COLORS.white, marginBottom: 24, marginTop: 20 },
+  
+  card: { 
+    backgroundColor: COLORS.surface, borderRadius: 20, padding: 24, 
+    alignItems: 'center', marginBottom: 24, borderWidth: 1, borderColor: COLORS.border 
   },
-  headerTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: COLORS.textPrimary,
-    textAlign: 'center',
-    marginBottom: 20,
+  avatarContainer: { 
+    width: 80, height: 80, borderRadius: 40, backgroundColor: COLORS.gold, 
+    justifyContent: 'center', alignItems: 'center', marginBottom: 16 
   },
-  card: {
-    backgroundColor: COLORS.surface,
-    padding: 22,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: COLORS.border,
+  avatarText: { fontSize: 32, fontWeight: 'bold', color: COLORS.background },
+  userName: { fontSize: 22, fontWeight: 'bold', color: COLORS.white, marginBottom: 4 },
+  userRank: { fontSize: 14, color: COLORS.gray, marginBottom: 20, textTransform: 'uppercase', letterSpacing: 1 },
+  
+  statsRow: { flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center' },
+  statItem: { alignItems: 'center' },
+  statValue: { fontSize: 20, fontWeight: 'bold', color: COLORS.white },
+  statValueGold: { fontSize: 20, fontWeight: 'bold', color: COLORS.gold },
+  statLabel: { fontSize: 12, color: COLORS.gray, marginTop: 4 },
+  divider: { width: 1, height: 40, backgroundColor: COLORS.border },
+
+  menuContainer: { marginBottom: 24 },
+  menuItem: { 
+    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+    backgroundColor: COLORS.surface, padding: 18, borderRadius: 12, marginBottom: 10,
+    borderWidth: 1, borderColor: 'transparent' 
   },
-  nameText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.accent,
-    marginBottom: 12,
+  menuText: { fontSize: 16, color: COLORS.white, fontWeight: '500' },
+  menuArrow: { fontSize: 20, color: COLORS.gray },
+
+  btnLogout: { 
+    backgroundColor: 'transparent', borderWidth: 1, borderColor: COLORS.error, 
+    padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 10 
   },
-  infoText: {
-    fontSize: 15,
-    color: COLORS.textPrimary,
-    marginBottom: 10,
-  },
-  btnAction: {
-    backgroundColor: COLORS.secondary,
-    padding: 14,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 16,
-  },
-  btnText: {
-    color: COLORS.textPrimary,
-    fontWeight: 'bold',
-    fontSize: 15,
-  },
+  btnLogoutText: { color: COLORS.error, fontWeight: 'bold', fontSize: 16 },
 });
